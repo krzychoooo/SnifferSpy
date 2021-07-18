@@ -1,26 +1,31 @@
 #include <Arduino.h>
+#include <avr/pgmspace.h>
+
+String prefixDevice1 = "\n\r\e[0;31m AVR--->";
+String prefixDevice2 = "\n\r\e[0;32m ESP--->";
 
 void setup() {
   Serial.begin(115200);
   Serial1.begin(9600);
   Serial2.begin(9600);
+  Serial.println("Sniffer start");
 }
 
-bool directionFromSerial1, oldDirectionFromSerial1;
+bool directionFromSerial1=false, oldDirectionFromSerial1=true;
 
 void loop() {
   if (Serial1.available( ))
   {
     directionFromSerial1 = true;
-    if(oldDirectionFromSerial1 == false) Serial.print("\n\e[0;31m 1 --->");
-    Serial.write(Serial1.read());
+    if(oldDirectionFromSerial1 == false) Serial.print(prefixDevice1);
+    Serial.print(Serial1.read()); Serial.print(" ");
   }
    
   if (Serial2.available( ))
   {
     directionFromSerial1 = false;
-    if(oldDirectionFromSerial1 == true) Serial.print("\n\e[0;32m 2 --->");
-    Serial.write(Serial2.read());
+    if(oldDirectionFromSerial1 == true) Serial.print(prefixDevice2);
+    Serial.print(Serial2.read()); Serial.print(" ");
   }
   
   oldDirectionFromSerial1 = directionFromSerial1;
