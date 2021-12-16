@@ -14,18 +14,26 @@ void setup() {
 bool directionFromSerial1=false, oldDirectionFromSerial1=true;
 
 void loop() {
+  
   if (Serial1.available( ))
   {
     directionFromSerial1 = true;
     if(oldDirectionFromSerial1 == false) Serial.print(prefixDevice1);
-    Serial.print(Serial1.read(),HEX); Serial.print(" ");
+    Serial.print(millis()); Serial.print("->"); 
+    while(Serial1.available( )){
+      Serial.print(Serial1.read(),HEX); Serial.print(" ");
+    }
+    
   }
    
   if (Serial2.available( ))
   {
     directionFromSerial1 = false;
     if(oldDirectionFromSerial1 == true) Serial.print(prefixDevice2);
-    Serial.print(Serial2.read(),HEX); Serial.print(" ");
+    Serial.print(millis()); Serial.print("->"); 
+    while(Serial2.available( )){
+      Serial.print(Serial2.read(),HEX); Serial.print(" ");
+    }
   }
   
   oldDirectionFromSerial1 = directionFromSerial1;
